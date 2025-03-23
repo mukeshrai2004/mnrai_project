@@ -46,7 +46,7 @@ public class testlogin {
 	@AfterMethod
 	public void teardown()
 	{
-		driver.quit();
 		driver.close();
+		driver.quit();
 	}
 }
