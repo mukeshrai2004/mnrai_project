@@ -1,20 +1,33 @@
 package login_pkg;
 
+import java.time.Duration;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
+import org.testng.TestNG;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 
 public class testlogin {
-
-	public static void main(String[] args) throws InterruptedException {
-		// TODO Auto-generated method stub
-		
+	WebDriver driver;
+	
+	@BeforeMethod
+	public void setup()
+	{
 		System.setProperty("webdriver.chrome.driver", "C:\\Drivers\\chromedriver.exe");
-		WebDriver driver=new ChromeDriver();
+		driver = new ChromeDriver();
 		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+	}
+	
+	@Test
+	public void verifytitle() throws InterruptedException
+	{
 		driver.get("https://practicetestautomation.com/practice-test-login/");
 		WebElement username=driver.findElement(By.id("username"));
 		WebElement password=driver.findElement(By.id("password"));
@@ -22,13 +35,18 @@ public class testlogin {
 		username.sendKeys("student");
 		password.sendKeys("Password123");
 		login.click();
-		String actualUrl="https://practicetestautomation.com/logged-in-successfully/";
+		
+		String actualUrl = "https://practicetestautomation.com/logged-in-successfully/";
 		String expectedUrl= driver.getCurrentUrl();
 		Assert.assertEquals(expectedUrl,actualUrl);
 		Thread.sleep(5000);
 		driver.findElement(By.xpath("//div[contains(@class,'wp-block-button')]//a")).click();
-		driver.close();
-		
 	}
-
+	
+	@AfterMethod
+	public void teardown()
+	{
+		driver.quit();
+		driver.close();
+	}
 }
